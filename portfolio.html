@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Supriya — Data Scientist & AI Web Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:     #0B1220;
+      --navy-mid: #111D30;
+      --navy-card:#162035;
+      --border:   #1E2E48;
+      --gold:     #C9A84C;
+      --gold-dim: #A88838;
+      --cream:    #F5F0E8;
+      --muted:    #8A9BB5;
+      --white:    #FFFFFF;
+      --font-display: 'DM Serif Display', serif;
+      --font-body:    'DM Sans', sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--cream);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.022;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6vw;
+      height: 68px;
+      background: rgba(11,18,32,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-dim);
+      padding: 0.5rem 1.2rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--navy); }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 100px 6vw 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.35;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+    .hero-orb {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+      top: 50%; left: 60%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; max-width: 760px; }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--gold);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block; width: 32px; height: 1px;
+      background: var(--gold);
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--cream); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--cream);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* Hero stats */
+    .hero-stats {
+      display: flex; gap: 3rem; margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ─── SECTION COMMONS ─── */
+    section { padding: 100px 6vw; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+    }
+    .section-sub {
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 3.5rem;
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ─── ABOUT ─── */
+    #about { background: var(--navy-mid); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .about-body { color: var(--muted); font-size: 1rem; line-height: 1.9; }
+    .about-body p + p { margin-top: 1.25rem; }
+    .about-body strong { color: var(--cream); font-weight: 500; }
+    .about-right {}
+    .skills-block { margin-bottom: 2.5rem; }
+    .skills-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .skills-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+    .tag:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+    /* ─── SERVICES ─── */
+    #services {}
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .service-card {
+      background: var(--navy);
+      padding: 2.5rem 2rem;
+      transition: background 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .service-card:hover { background: var(--navy-card); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.12em;
+      margin-bottom: 1.5rem;
+    }
+    .service-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+    .service-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+    }
+    .service-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+    /* ─── PROJECTS ─── */
+    #projects { background: var(--navy-mid); }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+    .project-card {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+    }
+    .project-card:hover { border-color: var(--gold-dim); transform: translateY(-3px); }
+    .project-tag-row { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--gold);
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.2);
+      padding: 0.2rem 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+    }
+    .project-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.5rem; }
+    .project-links { display: flex; gap: 1rem; }
+    .project-link {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+      padding-bottom: 1px;
+      transition: border-color 0.2s;
+    }
+    .project-link:hover { border-color: var(--gold); }
+
+    /* ─── EXPERIENCE TIMELINE ─── */
+    #experience {}
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0; top: 8px; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+    .timeline-item { position: relative; margin-bottom: 3rem; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem; top: 8px;
+      transform: translateX(-50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 2px solid var(--navy);
+      outline: 1px solid var(--gold-dim);
+    }
+    .tl-date {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.12em;
+      margin-bottom: 0.4rem;
+    }
+    .tl-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--white);
+      margin-bottom: 0.25rem;
+    }
+    .tl-org { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .tl-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.75; max-width: 560px; }
+
+    /* ─── CONTACT ─── */
+    #contact {
+      background: var(--navy-mid);
+      text-align: center;
+    }
+    .contact-inner { max-width: 600px; margin: 0 auto; }
+    .contact-email {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+      padding-bottom: 4px;
+      transition: border-color 0.2s;
+      display: inline-block;
+      margin: 2rem 0;
+    }
+    .contact-email:hover { border-color: var(--gold); }
+    .social-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2rem; }
+    .social-link {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .social-link:hover { color: var(--gold); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2rem 6vw;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    .footer-right {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+    .footer-right span { color: var(--gold); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow { animation: fadeUp 0.6s ease both; }
+    h1             { animation: fadeUp 0.7s 0.1s ease both; }
+    .hero-sub      { animation: fadeUp 0.7s 0.2s ease both; }
+    .hero-actions  { animation: fadeUp 0.7s 0.3s ease both; }
+    .hero-stats    { animation: fadeUp 0.7s 0.4s ease both; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      nav .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Supriya<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire me</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Data Scientist · AI Web Designer · Quant Finance</p>
+    <h1>Turning <em>mathematics</em> into measurable results</h1>
+    <p class="hero-sub">
+      I build AI-powered websites, data pipelines, and financial analytics solutions — backed by a strong foundation in pure mathematics and modern machine learning.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">View my work</a>
+      <a href="#contact" class="btn-ghost">Get in touch</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <span class="stat-num">B.Sc.</span>
+        <span class="stat-label">Hons. Mathematics</span>
+      </div>
+      <div>
+        <span class="stat-num">5+</span>
+        <span class="stat-label">Projects delivered</span>
+      </div>
+      <div>
+        <span class="stat-num">AI</span>
+        <span class="stat-label">Powered workflows</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">// About me</p>
+  <div class="about-grid">
+    <div>
+      <h2>Mathematics meets the real world</h2>
+      <div class="about-body">
+        <p>
+          I'm Supriya, a mathematician and data scientist based in Assam, India. My foundation is a <strong>B.Sc. (Hons.) in Mathematics from Gauhati University</strong>, and I'm currently building toward an M.Sc. in Mathematics alongside deep work in applied finance and machine learning.
+        </p>
+        <p>
+          My work sits at the intersection of <strong>rigorous quantitative thinking</strong> and practical technology — whether that's building predictive models for financial data, designing AI-accelerated websites, or developing fraud detection systems.
+        </p>
+        <p>
+          Longer term, I'm working toward a <strong>PhD in Finance or Economics</strong> and a career in academia and research — with an intermediate goal of the FPM (Fellow Programme in Management) in Finance at ISB Hyderabad.
+        </p>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="skills-block">
+        <p class="skills-label">Languages & Tools</p>
+        <div class="skills-tags">
+          <span class="tag">Python</span>
+          <span class="tag">SQL</span>
+          <span class="tag">Mathematica</span>
+          <span class="tag">LaTeX</span>
+          <span class="tag">Git</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Next.js</span>
+          <span class="tag">Tailwind CSS</span>
+        </div>
+      </div>
+      <div class="skills-block">
+        <p class="skills-label">Data Science</p>
+        <div class="skills-tags">
+          <span class="tag">scikit-learn</span>
+          <span class="tag">Pandas</span>
+          <span class="tag">NumPy</span>
+          <span class="tag">Plotly</span>
+          <span class="tag">TensorFlow</span>
+          <span class="tag">XGBoost</span>
+          <span class="tag">ARIMA</span>
+        </div>
+      </div>
+      <div class="skills-block">
+        <p class="skills-label">Finance & Research</p>
+        <div class="skills-tags">
+          <span class="tag">Financial Analytics</span>
+          <span class="tag">Risk Modelling</span>
+          <span class="tag">Time Series</span>
+          <span class="tag">Quantitative Finance</span>
+          <span class="tag">Fraud Detection</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SERVICES -->
+<section id="services">
+  <p class="section-label">// What I do</p>
+  <h2>Services</h2>
+  <p class="section-sub">From a beautiful landing page to a full data analytics pipeline — delivered faster with AI, built to last.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <p class="service-num">01</p>
+      <div class="service-icon">⬡</div>
+      <p class="service-title">AI Web Design</p>
+      <p class="service-desc">Professional websites built fast using Next.js, Tailwind, and AI-assisted design. Landing pages, portfolios, SaaS sites, and fintech frontends.</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">02</p>
+      <div class="service-icon">◈</div>
+      <p class="service-title">Data Dashboards</p>
+      <p class="service-desc">Interactive analytics dashboards powered by Python and Plotly. Replace manual reports with live, automated visualisations your team actually uses.</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">03</p>
+      <div class="service-icon">∿</div>
+      <p class="service-title">Financial Analytics</p>
+      <p class="service-desc">Revenue forecasting, KPI reporting, variance analysis, and risk modelling. Purpose-built for finance teams, CAs, and investment advisors.</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">04</p>
+      <div class="service-icon">⊕</div>
+      <p class="service-title">ML Models</p>
+      <p class="service-desc">End-to-end machine learning pipelines: churn prediction, fraud detection, demand forecasting, and classification models built for production.</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">05</p>
+      <div class="service-icon">⌬</div>
+      <p class="service-title">Data Pipelines</p>
+      <p class="service-desc">Automated ETL pipelines, database design, and report automation. Connect your data sources and eliminate hours of manual work per week.</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">06</p>
+      <div class="service-icon">◎</div>
+      <p class="service-title">Research & Consulting</p>
+      <p class="service-desc">Quantitative research, statistical analysis, and model validation for academic or business contexts. Rigorous, reproducible, and well-documented.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">// Selected work</p>
+  <h2>Projects</h2>
+  <p class="section-sub">A selection of recent work spanning web development, data science, and mathematical research.</p>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-tag-row">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">ML</span>
+        <span class="project-tag">Finance</span>
+      </div>
+      <p class="project-title">Fraud Detection System</p>
+      <p class="project-desc">End-to-end fraud detection pipeline on a large financial transactions dataset. XGBoost classifier with SMOTE for class imbalance, achieving high precision-recall on minority class.</p>
+      <div class="project-links">
+        <a href="#" class="project-link">View on GitHub →</a>
+        <a href="#" class="project-link">Case study →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-tag-row">
+        <span class="project-tag">Flask</span>
+        <span class="project-tag">MySQL</span>
+        <span class="project-tag">scikit-learn</span>
+      </div>
+      <p class="project-title">AI Expense Tracker</p>
+      <p class="project-desc">Full-stack expense tracking app with ML-powered category prediction, interactive category-wise charts, and a secure login system. Built with Flask and MySQL backend.</p>
+      <div class="project-links">
+        <a href="#" class="project-link">Live demo →</a>
+        <a href="#" class="project-link">GitHub →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-tag-row">
+        <span class="project-tag">Mathematica</span>
+        <span class="project-tag">Number Theory</span>
+        <span class="project-tag">Research</span>
+      </div>
+      <p class="project-title">Tribonacci Sequence Study</p>
+      <p class="project-desc">Mathematical research project on properties and applications of the Tribonacci sequence — a generalisation of Fibonacci. Computational analysis with Mathematica and formal proofs.</p>
+      <div class="project-links">
+        <a href="#" class="project-link">Read paper →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-tag-row">
+        <span class="project-tag">Next.js</span>
+        <span class="project-tag">Tailwind</span>
+        <span class="project-tag">AI Design</span>
+      </div>
+      <p class="project-title">This Portfolio</p>
+      <p class="project-desc">Designed and built from scratch using Next.js, Tailwind CSS, and AI-assisted design workflows. A demonstration of the same skills I offer to clients — fast, professional, and distinctive.</p>
+      <div class="project-links">
+        <a href="#" class="project-link">View source →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- EDUCATION / EXPERIENCE -->
+<section id="experience">
+  <p class="section-label">// Background</p>
+  <h2>Education & Experience</h2>
+  <p class="section-sub">Academic foundation in mathematics, with practical work in data science and technology.</p>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <p class="tl-date">2026 → Present</p>
+      <p class="tl-title">M.Sc. Mathematics (Pursuing)</p>
+      <p class="tl-org">Gauhati University, Assam</p>
+      <p class="tl-desc">Advanced coursework in real analysis, abstract algebra, topology, and applied mathematics. Parallel focus on quantitative finance and mathematical modelling.</p>
+    </div>
+
+    <div class="timeline-item">
+      <p class="tl-date">2023 → 2026</p>
+      <p class="tl-title">B.Sc. (Hons.) Mathematics</p>
+      <p class="tl-org">Pandu College, Gauhati University</p>
+      <p class="tl-desc">Undergraduate honours in pure and applied mathematics. Completed academic project on the Tribonacci sequence. Developed strong foundations in probability, statistics, and linear algebra.</p>
+    </div>
+
+    <div class="timeline-item">
+      <p class="tl-date">2025</p>
+      <p class="tl-title">Certificate in AI & Machine Learning</p>
+      <p class="tl-org">IIT Roorkee (Online Programme)</p>
+      <p class="tl-desc">Intensive programme covering supervised and unsupervised learning, deep learning fundamentals, and applied ML with Python. Capstone project on financial data modelling.</p>
+    </div>
+
+    <div class="timeline-item">
+      <p class="tl-date">Ongoing</p>
+      <p class="tl-title">Freelance — Data Science & Web Design</p>
+      <p class="tl-org">Independent</p>
+      <p class="tl-desc">Building AI-powered websites and data solutions for clients across finance and technology. Targeting finance analytics as a core practice area.</p>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <p class="section-label">// Get in touch</p>
+    <h2>Let's work together</h2>
+    <p class="section-sub" style="margin: 0 auto 1rem;">Whether you need a high-quality website, a data dashboard, or a financial analytics solution — I'd love to hear about your project.</p>
+    <a href="mailto:supriya@email.com" class="contact-email">supriya@email.com</a>
+    <div class="social-links">
+      <a href="#" class="social-link">LinkedIn</a>
+      <a href="#" class="social-link">GitHub</a>
+      <a href="#" class="social-link">Kaggle</a>
+      <a href="#" class="social-link">Resume ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-copy">© 2026 Supriya — All rights reserved</p>
+  <p class="footer-right">Built with <span>Next.js + Tailwind</span> · Deployed on Vercel</p>
+</footer>
+
+</body>
+</html>
